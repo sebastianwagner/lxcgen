@@ -7,6 +7,7 @@ cp ./network.conf "${TMP}"
 IP=$(echo "${NAME}" | tr -d '[:alpha:]')
 sed -i 's/192\.168\.100\.13/192.168.100.'"${IP}"'/' "${TMP}"
 
+cat ./capabilities.conf >> "${TMP}"
 
 #create
 SUITE=wheezy \
