@@ -26,9 +26,9 @@ cat << EOF > metadata.json
 EOF
 
 # rootfs.tar.gz
-mkdir rootfs && \
- tar -cf rootfs.tar.gz rootfs \
- rmdir rootfs
+mkdir rootfs \
+ && tar -cf rootfs.tar.gz rootfs \
+ && rmdir rootfs
 
 # jessie.box
 tar -czf jessie.box ./
