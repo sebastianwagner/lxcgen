@@ -10,10 +10,13 @@ EOF
 
 # lxc-template
 sed -e 's/,release:,clean/,release:,clean:,tarball:,auth-key/' \
- -e '147i\    #setup vagrant user' \
  -e 's/ dhcp/ manual/' \
+ -e '146i\ ' \
+ -e "146i\    chroot \$rootfs sed -i -e '/127.0.0.1/s/localhost/localhost '\$hostname'/' /etc/hosts" \
+ -e '147i\    #setup vagrant user' \
  -e '147i\    chroot $rootfs adduser --disabled-password --gecos Vagrant vagrant' \
  -e '147i\    chroot $rootfs adduser vagrant sudo' \
+ -e '147i\    echo "vagrant ALL=(ALL) NOPASSWD: ALL" | chroot $rootfs tee -a /etc/sudoers.d/vagrant' \
  -e '147i\    chroot --userspec=vagrant:vagrant $rootfs mkdir -p /home/vagrant/.ssh/' \
  -e '147i\    echo "vagrant:vagrant" | chroot $rootfs chpasswd' \
  -e '147i\    echo "'"$(cat /usr/share/vagrant/keys/vagrant.pub)"'" | sudo chroot --userspec=vagrant:vagrant $rootfs tee -a "/home/vagrant/.ssh/authorized_keys"' \
