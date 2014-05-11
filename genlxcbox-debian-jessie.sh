@@ -9,7 +9,14 @@ lxc.network.type = empty
 EOF
 
 # lxc-template
-sed 's/,release:,clean/,release:,clean:,tarball:,auth-key/' \
+sed -e 's/,release:,clean/,release:,clean:,tarball:,auth-key/' \
+ -e '147i\    #setup vagrant user' \
+ -e 's/ dhcp/ manual/' \
+ -e '147i\    chroot $rootfs adduser --disabled-password --gecos Vagrant vagrant' \
+ -e '147i\    chroot --userspec=vagrant:vagrant $rootfs mkdir -p /home/vagrant/.ssh/' \
+ -e '147i\    echo "vagrant:vagrant" | chroot $rootfs chpasswd' \
+ -e '147i\    echo "'"$(cat /usr/share/vagrant/keys/vagrant.pub)"'" | sudo chroot --userspec=vagrant:vagrant $rootfs tee -a "/home/vagrant/.ssh/authorized_keys"' \
+ -e '147i\ ' \
  /usr/share/lxc/templates/lxc-debian \
  > lxc-template
 
